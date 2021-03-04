@@ -4,18 +4,22 @@ GRTAGS
 GPATH
 prop
 out
+classes
+bin
 
 # OS X
 .DS_Store
-
-# intellij
-.idea
-*.iml
 
 # eclipse
 .project
 .classpath
 .settings
+
+# intellij
+*.iml
+*.ipr
+*.iws
+.idea
 
 # editors
 *.sublime-project
@@ -25,7 +29,11 @@ out
 # the build
 build-local.properties
 .gradle
-build
+build*
+cmake-build-debug/
+cmake-build-release/
+cmake-build-debug-*/
+cmake-build-release-*/
 
 # cpp build linux
 cppbuild/CMakeCache.txt
@@ -53,10 +61,15 @@ cppbuild/Debug
 cppbuild/Release
 cppbuild/Win32
 
-
-
-# Benchmark timings
-timings.log
-
 # JVM crash reports
 hs_err_pid*
+
+# Archive and Cluster data from system tests
+/aeron-archive/*.rec
+/aeron-archive/*.catalog
+/aeron-archive/*.dat
+/aeron-cluster/*.dat
+/aeron-cluster/recording.log
+
+aeron-samples/scripts/cluster/logs/
+aeron-samples/scripts/cluster/node*/

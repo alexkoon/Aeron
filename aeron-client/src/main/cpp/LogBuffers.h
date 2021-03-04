@@ -1,11 +1,11 @@
 /*
- * Copyright 2014 - 2015 Real Logic Ltd.
+ * Copyright 2014-2021 Real Logic Limited.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,36 +14,40 @@
  * limitations under the License.
  */
 
-#ifndef INCLUDED_AERON_LOG_BUFFERS__
-#define INCLUDED_AERON_LOG_BUFFERS__
+#ifndef AERON_LOG_BUFFERS_H
+#define AERON_LOG_BUFFERS_H
 
 #include <memory>
 #include <vector>
 
-#include <util/MemoryMappedFile.h>
-#include <concurrent/logbuffer/LogBufferDescriptor.h>
+#include "util/MemoryMappedFile.h"
+#include "concurrent/logbuffer/LogBufferDescriptor.h"
+#include "util/Export.h"
 
-namespace aeron {
+namespace aeron
+{
 
-using namespace aeron::common::util;
-using namespace aeron::common::concurrent;
-using namespace aeron::common::concurrent::logbuffer;
+using namespace aeron::util;
+using namespace aeron::concurrent;
+using namespace aeron::concurrent::logbuffer;
 
-class LogBuffers
+class CLIENT_EXPORT LogBuffers
 {
 public:
-    LogBuffers(const char *filename);
+    explicit LogBuffers(const char *filename, bool preTouch);
 
-    virtual ~LogBuffers();
+    LogBuffers(std::uint8_t *address, std::int64_t logLength, std::int32_t termLength);
 
-    inline AtomicBuffer& atomicBuffer(int index)
+    ~LogBuffers();
+
+    inline AtomicBuffer &atomicBuffer(int index)
     {
         return m_buffers[index];
     }
 
 private:
-    std::vector<MemoryMappedFile::ptr_t> m_memoryMappedFiles;
-    AtomicBuffer m_buffers[(2 * LogBufferDescriptor::PARTITION_COUNT) + 1];
+    MemoryMappedFile::ptr_t m_memoryMappedFiles;
+    AtomicBuffer m_buffers[LogBufferDescriptor::PARTITION_COUNT + 1];
 };
 
 }
